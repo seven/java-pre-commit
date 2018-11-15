@@ -1,0 +1,29 @@
+-   id: mvn-compile
+    name: pre commit check for java "mvn compile" 
+    description: add rules before check in java files
+    entry: ./hooks/mvn-compile.sh
+    language: script
+
+-   id: mvn-test
+    name: pre commit check for java "mvn test"
+    description: add rules before check in java files
+    entry: ./hooks/mvn-test.sh
+    language: script
+
+-   id: checkstyle
+    name: pre commit check for java checkstyle
+    description: add rules before check in java files
+    entry: ./hooks/lint/checkstyle/pre-commit
+    language: script
+
+-   id: checklib
+    name: pre commit check for java checklib
+    description: add rules before check in java files
+    entry: ./hooks/lint/checklib/pre-commit
+    language: script
+-   id: check-merge-conflict
+    name: Check for merge conflicts
+    description: Check for files that contain merge conflict strings.
+    entry: ./hooks/check-merge-conflict.py
+    language: python
+    types: [text]

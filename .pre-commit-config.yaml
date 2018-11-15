@@ -1,0 +1,9 @@
+repos:
+-   repo: https://github.com/seven/java-pre-commit
+    rev: master
+    hooks:
+    -   id: mvn-compile
+    -   id: mvn-test
+    -   id: checklib
+    -   id: checkstyle
+    -   id: check-merge-conflict

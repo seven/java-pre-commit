@@ -1,0 +1,47 @@
+#!/bin/bash
+
+mkdir -p .cache
+cd .cache
+if [ ! -f checkstyle.jar ]
+then
+    curl -LJO "https://raw.githubusercontent.com/seven/java-pre-commit/master/hooks/lint/checkstyle/checkstyle.jar"
+    chmod 755 checkstyle.jar
+fi
+
+if [ ! -f checkstyle.xml ]
+then
+    curl -LJO "https://raw.githubusercontent.com/seven/java-pre-commit/master/hooks/lint/checkstyle/checkstyle.xml"
+fi
+cd ..
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+	against=HEAD
+else
+	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+count=0
+
+for FILE in $(git diff-index --cached --name-status $against -- | cut -c 3-); do
+	if [ -f "$FILE" ]
+	then
+		if [ "${FILE/-client//}" = "$FILE" ] && [ "${FILE/test//}" = "$FILE" ] && [ "${FILE##*.}"x = "java"x ]
+		then
+			java -jar .cache/checkstyle.jar -c .cache/checkstyle.xml "$FILE"
+			if [ $? -ne 0 ]
+			then
+				count=$(expr $count + 1)
+			fi
+		fi
+	fi
+done
+
+if [ $count -gt 0 ]
+then
+	echo '--------------------------------------------------'
+	echo "checkstyle 不符合规范"
+	echo '--------------------------------------------------'
+	exit 1
+fi
+
