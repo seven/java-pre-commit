@@ -21,9 +21,10 @@
     description: add rules before check in java files
     entry: ./hooks/lint/checklib/pre-commit
     language: script
+
 -   id: check-merge-conflict
     name: Check for merge conflicts
     description: Check for files that contain merge conflict strings.
     entry: ./hooks/check-merge-conflict.py
-    language: python
+    language: script
     types: [text]
